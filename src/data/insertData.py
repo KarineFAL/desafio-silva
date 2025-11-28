@@ -2,8 +2,7 @@ import psycopg2
 from psycopg2 import OperationalError
 import json
 
-# Configurações de conexão
-host = '172.17.0.2'
+host = 'localhost'
 port = '5432'
 database = 'catalago'
 user = 'postgres'
@@ -37,42 +36,42 @@ def inserir_dados_no_banco(dados):
     try:
         # Inserir biomas
         for tree in dados:
-            for biome in tree['biomes']:  # Verifique a chave aqui
+            for biome in tree['biomes']: 
                 print(tree['biomes'])                
-                #cursor.execute("INSERT INTO biomes (name) VALUES (%s) ON CONFLICT (name) DO NOTHING;", (biome,))
+                cursor.execute("INSERT INTO biomes (name) VALUES (%s) ON CONFLICT (name) DO NOTHING;", (biome,))
         
         # Inserir árvores
-    #     for tree in dados:
-    #         cursor.execute("""
-    #             INSERT INTO trees (common_name, scientific_name, description)
-    #             VALUES (%s, %s, %s) RETURNING id;
-    #         """, (tree['commonName'], tree['scientificName'], tree['description']))
+        for tree in dados:
+            cursor.execute("""
+                INSERT INTO trees (common_name, scientific_name, description)
+                VALUES (%s, %s, %s) RETURNING id;
+            """, (tree['commonName'], tree['scientificName'], tree['description']))
             
-    #         tree_id = cursor.fetchone()[0]
-    #         print(f"Inserindo árvore: {tree['commonName']} com ID: {tree_id}")
+            tree_id = cursor.fetchone()[0]
+            print(f"Inserindo árvore: {tree['commonName']} com ID: {tree_id}")
 
-    #         # Inserir associação árvore-bioma
-    #         for biome in tree['biomes']:  # Verifique a chave aqui
-    #             cursor.execute("""
-    #                 INSERT INTO tree_biomes (tree_id, biome_id)
-    #                 SELECT %s, id FROM biomes WHERE name = %s;
-    #             """, (tree_id, biome))
+            # Inserir associação árvore-bioma
+            for biome in tree['biomes']:  # Verifique a chave aqui
+                cursor.execute("""
+                    INSERT INTO tree_biomes (tree_id, biome_id)
+                    SELECT %s, id FROM biomes WHERE name = %s;
+                """, (tree_id, biome))
 
-    #     connection.commit()
-    #     print("Dados inseridos com sucesso.")
+        connection.commit()
+        print("Dados inseridos com sucesso.")
 
-    # except psycopg2.Error as e:
-    #     print(f"Erro no PostgreSQL: {e.pgcode} - {e.pgerror}")
-    #     connection.rollback()
-    # except Exception as e:
-    #     print(f"Erro inesperado: {str(e)}")
-    #     connection.rollback()
+    except psycopg2.Error as e:
+        print(f"Erro no PostgreSQL: {e.pgcode} - {e.pgerror}")
+        connection.rollback()
+    except Exception as e:
+        print(f"Erro inesperado: {str(e)}")
+        connection.rollback()
     finally:
         cursor.close()
         connection.close()
 
 def main():
-    caminho_arquivo = '/home/karine/Documents/DesafioSilva/desafio-silva/src/data/species.json'
+    caminho_arquivo = 'C:\Users\ka_fe\desafio-silva\src\data\species.json'
     dados = carregar_dados_json(caminho_arquivo)
     inserir_dados_no_banco(dados)
 

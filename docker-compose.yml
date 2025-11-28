@@ -2,18 +2,17 @@ version: '3'
 
 services:
   db:
-    image: postgres:13  # Usando a imagem oficial do PostgreSQL
+    image: postgres:13  
     container_name: postgres_container
     environment:
-      POSTGRES_DB: postgres        # Nome do banco de dados
-      POSTGRES_USER: postgres     # Usuário do PostgreSQL
-      POSTGRES_PASSWORD: minhasenha  # Senha do PostgreSQL
+      POSTGRES_DB: catalago     
+      POSTGRES_USER: postgres    
+      POSTGRES_PASSWORD: senha 
     ports:
-      - "5432:5432"  # Mapeando a porta 5432 do container para a 5432 do host
+      - "5432:5432"  
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persistência de dados entre reinicializações
+      - postgres_data:/var/lib/postgresql/data  
 
-  # Serviço para o Django (opcional, se você quiser rodar o Django em containers também)
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -27,4 +26,4 @@ services:
       - DEBUG=True
 
 volumes:
-  postgres_data:  # Volume persistente para os dados do PostgreSQL
+  postgres_data:  

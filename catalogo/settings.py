@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'catalogo.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  
+        'NAME': 'catalago',  
         'USER': 'postgres', 
         'PASSWORD': 'senha',  
         'HOST': 'localhost',  

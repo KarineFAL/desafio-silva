@@ -2,11 +2,11 @@ import psycopg2
 from psycopg2 import OperationalError
 
 # Defina as configurações de conexão
-host = '172.17.0.2'           # Ou o nome do container se estiver usando uma rede Docker personalizada
-port = '5432'                 # Porta do PostgreSQL (padrão)
-database = 'catalago'         # Nome do banco de dados
-user = 'postgres'             # Usuário do banco de dados
-password = 'senha'            # Senha do banco de dados
+host = 'localhost'           
+port = '5432'                 
+database = 'catalago'         
+user = 'postgres'             
+password = 'senha'           
 
 # Função para conectar ao banco de dados PostgreSQL
 def conectar_postgres():
